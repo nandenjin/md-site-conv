@@ -12,6 +12,7 @@ module.exports = {
     node: true
   },
   plugins: [
+    '@typescript-eslint',
     'prettier'
   ],
   extends: [
