@@ -1,8 +1,7 @@
 #! /usr/bin/env node
 
 import * as path from 'path'
-import * as fs from 'fs'
-const fsp = fs.promises
+import * as fsp from 'fs-extra'
 
 import parseArgs from 'minimist'
 import consola from 'consola'
@@ -12,13 +11,32 @@ import markdownItMeta from 'markdown-it-meta'
 const md = new MarkdownIt()
 md.use(markdownItMeta)
 
+export enum RouteType {
+  // eslint-disable-next-line no-unused-vars
+  DIRECTORY = 'directory',
+  // eslint-disable-next-line no-unused-vars
+  PAGE = 'page'
+}
+
+export interface Route {
+  type: RouteType
+  path: string
+  meta?: object
+}
+
+export interface ConvertOptions {
+  exportIndex?: boolean
+}
+
 export const convertDir = async (
   entryDir: string,
   outDir: string,
+  options: ConvertOptions = {},
   rootDir: string = entryDir
 ): Promise<void> => {
   const tasks: Promise<any>[] = []
   const entries = await fsp.readdir(entryDir, { withFileTypes: true })
+  const routes: Route[] = []
 
   // Create directory
   await fsp.mkdir(outDir)
@@ -31,8 +49,14 @@ export const convertDir = async (
     const route = '/' + path.relative(rootDir, entPath).replace(/\.[^/.]+$/, '')
 
     // Recursively read if the entry is a directory
-    if (ent.isDirectory())
-      tasks.push(convertDir(entPath, path.join(outDir, name, rootDir)))
+    if (ent.isDirectory()) {
+      tasks.push(convertDir(entPath, path.join(outDir, name), options, rootDir))
+      routes.push({
+        type: RouteType.DIRECTORY,
+        path: route
+      })
+    }
+
     // Convert if the entry is a markdown data
     else if (name.match(/\.md$/)) {
       consola.log(route)
@@ -42,19 +66,27 @@ export const convertDir = async (
 
       // Write to file
       tasks.push(
-        convertFile(entPath).then(result =>
+        convertFile(entPath).then(result => {
           fsp.writeFile(distPath, JSON.stringify({ ...result, route }), {
             encoding: 'utf-8'
           })
-        )
+          routes.push({
+            type: RouteType.PAGE,
+            path: route,
+            meta: result.meta
+          })
+        })
       )
     }
   }
 
   await Promise.all(tasks)
+
+  const indexPath = path.join(outDir, '_index.json')
+  fsp.writeFile(indexPath, JSON.stringify(routes))
 }
 
-export const convertFile = async (entryPath: string): Promise<object> => {
+export const convertFile = async (entryPath: string): Promise<any> => {
   const source = await fsp.readFile(entryPath, { encoding: 'utf8' })
   const rendered = md.render(source)
   const meta = (<any>md).meta as object
@@ -64,22 +96,35 @@ export const convertFile = async (entryPath: string): Promise<object> => {
   }
 }
 
+// Entry point
 if (!module.parent) {
-  const createError = (message: string): Error => {
-    consola.fatal(message)
-    return new Error(message)
-  }
+  ;(async () => {
+    const createError = (message: string): Error => {
+      consola.fatal(message)
+      return new Error(message)
+    }
 
-  const args = parseArgs(process.argv.slice(2))
+    // Parse CLI args
+    const args = parseArgs(process.argv.slice(2))
 
-  if (!args._ || !args._[0] || args._[0].length < 1)
-    throw createError('Path for entryDir is required')
-  if (!args.o || args.o.length < 1)
-    throw createError('Path for outDir is required (-o)')
+    if (!args._ || !args._[0] || args._[0].length < 1)
+      throw createError('Path for entryDir is required')
+    if (!args.o || args.o.length < 1)
+      throw createError('Path for outDir is required (-o)')
 
-  const entryDir = args._[0]
-  const outDir = args.o
+    const entryDir = args._[0]
+    const outDir = args.o
 
-  consola.info('Processing...')
-  convertDir(entryDir, outDir)
+    const options: ConvertOptions = {
+      exportIndex: args.index
+    }
+
+    if (await fsp.exists(outDir)) {
+      consola.info('outDir is already existing. Cleaning...')
+      await fsp.remove(outDir)
+    }
+
+    consola.info('Processing files...')
+    convertDir(entryDir, outDir, options)
+  })()
 }
