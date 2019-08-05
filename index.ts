@@ -21,6 +21,8 @@ export enum RouteType {
 export interface Route {
   type: RouteType
   path: string
+  name: string
+  ref: string
   meta?: object
 }
 
@@ -46,14 +48,20 @@ export const convertDir = async (
     const name = ent.name
     const routeName = name.replace(/\.[^/.]+$/, '')
     const entPath = path.join(entryDir, name)
-    const route = '/' + path.relative(rootDir, entPath).replace(/\.[^/.]+$/, '')
+
+    // Route path
+    // - remove "index" and extension
+    const route =
+      '/' + path.relative(rootDir, entPath).replace(/(index)?\.[^/.]+$/, '')
 
     // Recursively read if the entry is a directory
     if (ent.isDirectory()) {
       tasks.push(convertDir(entPath, path.join(outDir, name), options, rootDir))
       routes.push({
         type: RouteType.DIRECTORY,
-        path: route
+        path: route,
+        name: routeName,
+        ref: path.join(routeName, '_index.json')
       })
     }
 
@@ -73,6 +81,8 @@ export const convertDir = async (
           routes.push({
             type: RouteType.PAGE,
             path: route,
+            name: routeName,
+            ref: routeName + '.json',
             meta: result.meta
           })
         })
