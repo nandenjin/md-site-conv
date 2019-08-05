@@ -1,0 +1,36 @@
+{
+  "name": "@nandenjin/md-site-conv",
+  "version": "1.0.0",
+  "description": "Markdown article -> json converter",
+  "main": "lib/index.js",
+  "bin": {
+    "md-site-conv": "lib/index.js"
+  },
+  "repository": "https://github.com/nandenjin/nakamura-lab.git",
+  "author": "Kazumi Inada <hello@nandenjin.com>",
+  "scripts": {
+    "lint": "eslint --ext ts --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext ts --ignore-path .gitignore .",
+    "prepare": "npm run build",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "consola": "^2.9.0",
+    "markdown-it": "^9.0.1",
+    "markdown-it-meta": "^0.0.1",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^0.0.8",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.3"
+  },
+  "license": "MIT"
+}
