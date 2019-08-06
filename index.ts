@@ -109,18 +109,13 @@ export const convertFile = async (entryPath: string): Promise<any> => {
 // Entry point
 if (!module.parent) {
   ;(async () => {
-    const createError = (message: string): Error => {
-      consola.fatal(message)
-      return new Error(message)
-    }
-
     // Parse CLI args
     const args = parseArgs(process.argv.slice(2))
 
     if (!args._ || !args._[0] || args._[0].length < 1)
-      throw createError('Path for entryDir is required')
+      throw new Error('Path for entryDir is required')
     if (!args.o || args.o.length < 1)
-      throw createError('Path for outDir is required (-o)')
+      throw new Error('Path for outDir is required (-o)')
 
     const entryDir = args._[0]
     const outDir = args.o
@@ -136,5 +131,7 @@ if (!module.parent) {
 
     consola.info('Processing files...')
     convertDir(entryDir, outDir, options)
-  })()
+  })().catch(e => {
+    consola.fatal(e)
+  })
 }
