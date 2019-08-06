@@ -11,11 +11,10 @@ import markdownItMeta from 'markdown-it-meta'
 // Config bug for ESLint?
 // eslint-disable-next-line no-unused-vars
 import { Route, RouteType } from './types'
+export { Route, RouteType }
 
 const md = new MarkdownIt()
 md.use(markdownItMeta)
-
-export { RouteType }
 
 export interface ConvertOptions {
   exportIndex?: boolean
