@@ -75,7 +75,7 @@ export const convertDir = async (
       // Write to file
       tasks.push(
         convertFile(entPath).then(result => {
-          fsp.writeFile(distPath, JSON.stringify({ ...result, route }), {
+          fsp.writeFile(distPath, JSON.stringify({ ...result, path: route }), {
             encoding: 'utf-8'
           })
           routes.push({
