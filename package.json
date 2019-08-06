@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Markdown article -> json converter",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "bin": {
     "md-site-conv": "lib/index.js"
   },

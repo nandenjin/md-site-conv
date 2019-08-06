@@ -8,23 +8,14 @@ import consola from 'consola'
 import MarkdownIt from 'markdown-it'
 import markdownItMeta from 'markdown-it-meta'
 
+// Config bug for ESLint?
+// eslint-disable-next-line no-unused-vars
+import { Route, RouteType } from './types'
+
 const md = new MarkdownIt()
 md.use(markdownItMeta)
 
-export enum RouteType {
-  // eslint-disable-next-line no-unused-vars
-  DIRECTORY = 'directory',
-  // eslint-disable-next-line no-unused-vars
-  PAGE = 'page'
-}
-
-export interface Route {
-  type: RouteType
-  path: string
-  name: string
-  ref: string
-  meta?: object
-}
+export { RouteType }
 
 export interface ConvertOptions {
   exportIndex?: boolean
