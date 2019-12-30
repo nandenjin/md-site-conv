@@ -90,6 +90,13 @@ export const convertDir = async (
         })
       )
     }
+
+    // Just copy other files
+    else {
+      consola.log(route + ext)
+      const distPath = path.join(outDir, routeName) + ext
+      tasks.push(fsp.copyFile(entPath, distPath))
+    }
   }
 
   await Promise.all(tasks)
