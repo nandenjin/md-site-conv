@@ -32,6 +32,18 @@ export interface ConvertOptions {
   exportIndex?: boolean
 }
 
+export interface Page {
+  _content: string
+  meta: { [key: string]: string }
+}
+
+/**
+ * Convert files under directory. Markdown files (`.md`) will be converted to json (`.json`), and the others will just be copied to same position in the dist directory.
+ * @param entryDir Path to entry directory
+ * @param outDir Path to dist directory
+ * @param options Options for converter (optional)
+ * @param rootDir Path as content root (optional / for internal usage)
+ */
 export const convertDir = async (
   entryDir: string,
   outDir: string,
@@ -116,16 +128,28 @@ export const convertDir = async (
   fsp.writeFile(indexPath, JSON.stringify(routes))
 }
 
-export const convertFile = async (entryPath: string): Promise<any> => {
+/**
+ * Convert markdown file to JSON object with `Page` scheme.
+ * @param entryPath Path to `.md` file to be converted.
+ */
+export const convertFile = async (entryPath: string): Promise<Page> => {
   const source = await fsp.readFile(entryPath, { encoding: 'utf8' })
   const rendered = md.render(source)
-  const meta = (<any>md).meta as object
-  return {
+  const meta = (<any>md).meta as { [key: string]: string }
+  const result: Page = {
     _content: rendered,
     meta
   }
+
+  return result
 }
 
+/**
+ * Watch files under `entryDir` and re-converted content in dist directory for every time the files are updated. (The real-time version of `convertDir()`.)
+ * @param entryDir Path to entry directory
+ * @param outDir Path to dist directory
+ * @param options Options for converter (optional, will be passed to `convertDir` internally)
+ */
 export const watchDir = (
   entryDir: string,
   outDir: string,
