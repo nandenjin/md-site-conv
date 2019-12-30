@@ -16,15 +16,16 @@
   },
   "dependencies": {
     "consola": "^2.9.0",
-    "fs-extra": "^8.1.0",
     "markdown-it": "^9.0.1",
     "markdown-it-meta": "^0.0.1",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^0.0.8",
     "@types/minimist": "^1.2.0",
     "@types/node": "^12.6.8",
+    "@types/rimraf": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",

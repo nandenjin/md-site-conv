@@ -1,12 +1,13 @@
 #! /usr/bin/env node
 
 import * as path from 'path'
-import * as fsp from 'fs-extra'
+import { promises as fsp } from 'fs'
 
 import parseArgs from 'minimist'
 import consola from 'consola'
 import MarkdownIt from 'markdown-it'
 import markdownItMeta from 'markdown-it-meta'
+import rimraf from 'rimraf'
 
 const md = new MarkdownIt()
 md.use(markdownItMeta)
@@ -46,6 +47,7 @@ export const convertDir = async (
   for (let i = 0; i < entries.length; i++) {
     const ent = entries[i]
     const name = ent.name
+    const ext = path.extname(name)
     const routeName = name.replace(/\.[^/.]+$/, '')
     const entPath = path.join(entryDir, name)
 
@@ -66,7 +68,7 @@ export const convertDir = async (
     }
 
     // Convert if the entry is a markdown data
-    else if (name.match(/\.md$/)) {
+    else if (ext === '.md') {
       consola.log(route)
 
       // Output path
@@ -119,18 +121,33 @@ if (!module.parent) {
 
     const entryDir = args._[0]
     const outDir = args.o
+    const index = !!args.index
+    const watch = !!args.watch
 
     const options: ConvertOptions = {
-      exportIndex: args.index
+      exportIndex: index
     }
 
-    if (await fsp.exists(outDir)) {
+    try {
+      fsp.stat(outDir)
+
       consola.info('outDir is already existing. Cleaning...')
-      await fsp.remove(outDir)
+      await new Promise((resolve, reject) =>
+        rimraf(outDir, error => (!error ? resolve() : reject(error)))
+      )
+    } catch (_) {
+      // Do nothing
     }
 
     consola.info('Processing files...')
     convertDir(entryDir, outDir, options)
+
+    if (watch) {
+      consola.success('First convert done!')
+      consola.info('Start watching...')
+    } else {
+      consola.success('Done!')
+    }
   })().catch(e => {
     consola.fatal(e)
   })
