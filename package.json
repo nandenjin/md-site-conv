@@ -15,6 +15,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "chokidar": "^3.3.1",
     "consola": "^2.9.0",
     "markdown-it": "^9.0.1",
     "markdown-it-meta": "^0.0.1",

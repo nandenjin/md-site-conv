@@ -8,6 +8,7 @@ import consola from 'consola'
 import MarkdownIt from 'markdown-it'
 import markdownItMeta from 'markdown-it-meta'
 import rimraf from 'rimraf'
+import chokidar from 'chokidar'
 
 const md = new MarkdownIt()
 md.use(markdownItMeta)
@@ -42,7 +43,17 @@ export const convertDir = async (
   const routes: Route[] = []
 
   // Create directory
-  await fsp.mkdir(outDir)
+  try {
+    await fsp.mkdir(outDir)
+  } catch (e) {
+    try {
+      if (!(await fsp.stat(outDir)).isDirectory()) {
+        throw e
+      }
+    } catch (_) {
+      throw e
+    }
+  }
 
   for (let i = 0; i < entries.length; i++) {
     const ent = entries[i]
@@ -115,6 +126,21 @@ export const convertFile = async (entryPath: string): Promise<any> => {
   }
 }
 
+export const watchDir = (
+  entryDir: string,
+  outDir: string,
+  options: ConvertOptions
+) => {
+  return chokidar.watch(entryDir).on('all', (event, at) => {
+    const isDirectory = ['addDir', 'unlinkDir'].includes(event)
+
+    // Directory contains the file or directory path itself
+    const src = isDirectory ? at : path.dirname(at)
+    const target = path.join(outDir, path.relative(entryDir, src))
+    convertDir(src, target, options, entryDir).catch(e => consola.error(e))
+  })
+}
+
 // Entry point
 if (!module.parent) {
   ;(async () => {
@@ -136,7 +162,7 @@ if (!module.parent) {
     }
 
     try {
-      fsp.stat(outDir)
+      await fsp.stat(outDir)
 
       consola.info('outDir is already existing. Cleaning...')
       await new Promise((resolve, reject) =>
@@ -146,13 +172,16 @@ if (!module.parent) {
       // Do nothing
     }
 
-    consola.info('Processing files...')
-    convertDir(entryDir, outDir, options)
-
+    // Watch Mode
     if (watch) {
-      consola.success('First convert done!')
       consola.info('Start watching...')
-    } else {
+      watchDir(entryDir, outDir, options)
+    }
+
+    // Normal Mode
+    else {
+      consola.info('Processing files...')
+      convertDir(entryDir, outDir, options)
       consola.success('Done!')
     }
   })().catch(e => {
