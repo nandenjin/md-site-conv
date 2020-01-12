@@ -74,6 +74,9 @@ export const convertDir = async (
     const routeName = name.replace(/\.[^/.]+$/, '')
     const entPath = path.join(entryDir, name)
 
+    // Ignore dot files
+    if (name.match(/^\./)) continue
+
     // Route path
     // - remove "index" and extension
     const route =
@@ -117,7 +120,7 @@ export const convertDir = async (
     // Just copy other files
     else {
       consola.log(route + ext)
-      const distPath = path.join(outDir, routeName) + ext
+      const distPath = path.join(outDir, name)
       tasks.push(fsp.copyFile(entPath, distPath))
     }
   }
