@@ -8,7 +8,7 @@ import consola from 'consola'
 import MarkdownIt from 'markdown-it'
 import markdownItMeta from 'markdown-it-meta'
 import rimraf from 'rimraf'
-import chokidar from 'chokidar'
+import chokidar, { FSWatcher } from 'chokidar'
 
 const md = new MarkdownIt()
 md.use(markdownItMeta)
@@ -44,12 +44,12 @@ export interface Page {
  * @param options Options for converter (optional)
  * @param rootDir Path as content root (optional / for internal usage)
  */
-export const convertDir = async (
+export async function convertDir(
   entryDir: string,
   outDir: string,
   options: ConvertOptions = {},
   rootDir: string = entryDir
-): Promise<void> => {
+): Promise<void> {
   const tasks: Promise<any>[] = []
   const entries = await fsp.readdir(entryDir, { withFileTypes: true })
   const routes: Route[] = []
@@ -135,7 +135,7 @@ export const convertDir = async (
  * Convert markdown file to JSON object with `Page` scheme.
  * @param entryPath Path to `.md` file to be converted.
  */
-export const convertFile = async (entryPath: string): Promise<Page> => {
+export async function convertFile(entryPath: string): Promise<Page> {
   const source = await fsp.readFile(entryPath, { encoding: 'utf8' })
   const rendered = md.render(source)
   const meta = (<any>md).meta as { [key: string]: string }
@@ -153,11 +153,11 @@ export const convertFile = async (entryPath: string): Promise<Page> => {
  * @param outDir Path to dist directory
  * @param options Options for converter (optional, will be passed to `convertDir` internally)
  */
-export const watchDir = (
+export function watchDir(
   entryDir: string,
   outDir: string,
   options: ConvertOptions
-) => {
+): FSWatcher {
   return chokidar.watch(entryDir).on('all', (event, at) => {
     const isDirectory = ['addDir', 'unlinkDir'].includes(event)
 
