@@ -7,6 +7,7 @@ import parseArgs from 'minimist'
 import consola from 'consola'
 import MarkdownIt from 'markdown-it'
 import markdownItMeta from 'markdown-it-meta'
+import yaml from 'yaml'
 import rimraf from 'rimraf'
 import chokidar, { FSWatcher } from 'chokidar'
 
@@ -32,13 +33,20 @@ export interface ConvertOptions {
   exportIndex?: boolean
 }
 
-export interface Page {
-  _content: string
+interface MarkdownConvertResult {
+  html: string
   meta: { [key: string]: string }
 }
 
+export interface Page {
+  path: string
+  html?: string
+  structed?: Record<string, any>
+  meta?: { [key: string]: string }
+}
+
 /**
- * Convert files under directory. Markdown files (`.md`) will be converted to json (`.json`), and the others will just be copied to same position in the dist directory.
+ * Convert files under directory. Markdown (`.md`) and YAML (`.yaml`, `.yml`) files will be converted to json (`.json`), and the others will just be copied to same position in the dist directory.
  * @param entryDir Path to entry directory
  * @param outDir Path to dist directory
  * @param options Options for converter (optional)
@@ -103,7 +111,8 @@ export async function convertDir(
       // Write to file
       tasks.push(
         convertFile(entPath).then(result => {
-          fsp.writeFile(distPath, JSON.stringify({ ...result, path: route }), {
+          const page: Page = { ...result, path: route }
+          fsp.writeFile(distPath, JSON.stringify(page), {
             encoding: 'utf-8'
           })
           routes.push({
@@ -113,6 +122,21 @@ export async function convertDir(
             ref: routeName + '.json',
             meta: result.meta
           })
+        })
+      )
+    }
+
+    // Convert if the entry is a yaml data
+    else if (ext.match(/^\.ya?ml$/)) {
+      consola.log(route)
+
+      // Output path
+      const distPath = path.join(outDir, routeName) + '.json'
+
+      tasks.push(
+        fsp.readFile(entPath, { encoding: 'utf-8' }).then(content => {
+          const page: Page = { path: route, structed: yaml.parse(content) }
+          fsp.writeFile(distPath, JSON.stringify(page))
         })
       )
     }
@@ -135,12 +159,14 @@ export async function convertDir(
  * Convert markdown file to JSON object with `Page` scheme.
  * @param entryPath Path to `.md` file to be converted.
  */
-export async function convertFile(entryPath: string): Promise<Page> {
+export async function convertFile(
+  entryPath: string
+): Promise<MarkdownConvertResult> {
   const source = await fsp.readFile(entryPath, { encoding: 'utf8' })
   const rendered = md.render(source)
   const meta = (<any>md).meta as { [key: string]: string }
-  const result: Page = {
-    _content: rendered,
+  const result: MarkdownConvertResult = {
+    html: rendered,
     meta
   }
 
