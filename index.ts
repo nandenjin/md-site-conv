@@ -234,7 +234,7 @@ if (!module.parent) {
     // Normal Mode
     else {
       consola.info('Processing files...')
-      convertDir(entryDir, outDir, options)
+      await convertDir(entryDir, outDir, options)
       consola.success('Done!')
     }
   })().catch(e => {
