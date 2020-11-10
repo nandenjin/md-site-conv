@@ -1,3 +1,12 @@
+## [1.2.4](https://github.com/nandenjin/md-site-conv/compare/v1.2.3...v1.2.4) (2020-11-10)
+
+
+### Bug Fixes
+
+* Accept any types for meta values ([a8d093e](https://github.com/nandenjin/md-site-conv/commit/a8d093e29e01d5578be7a0650b0ee2aa38079ba1))
+
+
+
 ## [1.2.3](https://github.com/nandenjin/md-site-conv/compare/v1.2.2...v1.2.3) (2020-11-10)
 
 
