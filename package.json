@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "eslint --ext ts --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext ts --ignore-path .gitignore .",
-    "prepare": "npm run build",
+    "prepublish": "npm run build",
     "build": "tsc",
     "release": "shipjs prepare"
   },

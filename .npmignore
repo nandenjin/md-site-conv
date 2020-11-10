@@ -1,0 +1,7 @@
+# Maintenance files
+.github
+ship.config.js
+.eslintrc.js
+
+# Misc
+*.log
