@@ -15,7 +15,7 @@
     "lint": "eslint --ext ts --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext ts --ignore-path .gitignore .",
     "prepublish": "npm run build",
-    "build": "tsc",
+    "build": "rollup -c",
     "release": "shipjs prepare"
   },
   "dependencies": {
@@ -28,6 +28,8 @@
     "yaml": "^1.10.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
     "@types/markdown-it": "^0.0.8",
     "@types/minimist": "^1.2.0",
     "@types/node": "^12.6.8",
@@ -37,8 +39,9 @@
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.15.0",
     "prettier": "^1.18.2",
+    "rollup": "^2.33.1",
     "shipjs": "0.23.0",
-    "typescript": "^3.5.3"
+    "typescript": "^4.0.5"
   },
   "license": "MIT"
 }

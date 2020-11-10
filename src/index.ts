@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 import * as path from 'path'
 import { promises as fsp } from 'fs'
 

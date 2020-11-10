@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
-    "esModuleInterop": true,
-    "declaration": true
+    "esModuleInterop": true
   }
 }
