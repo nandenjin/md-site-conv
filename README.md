@@ -9,9 +9,16 @@ Generate js-importable pagetree from Markdown files.
 
 ## Install
 
-This package is now published on GitHub Package Registry. You can set registry for all `@nandenjin/` packages by adding this to `.npmrc`:
-```
-registry=https://npm.pkg.github.com/nandenjin
+`@nandenjin/md-site-conv` is hosted on GitHub Packages Registry. Add following to `.npmrc`/`.yarnrc` to use it for all `@nandenjin/` packages. [Learn more](https://docs.github.com/en/free-pro-team@latest/packages/using-github-packages-with-your-projects-ecosystem/configuring-npm-for-use-with-github-packages#installing-a-package)
+
+```shell
+# .npmrc
+registry=https://registry.npmjs.org
+@nandenjin:registry=https://npm.pkg.github.com/nandenjin
+
+# .yarnrc
+registry "https://registry.npmjs.org"
+"@nandenjin:registry" "https://npm.pkg.github.com"
 ```
 
 Then 
