@@ -12,8 +12,8 @@
   "repository": "https://github.com/nandenjin/md-site-conv.git",
   "author": "Kazumi Inada <hello@nandenjin.com>",
   "scripts": {
-    "lint": "eslint --ext ts --ignore-path .gitignore .",
-    "lintfix": "eslint --fix --ext ts --ignore-path .gitignore .",
+    "lint": "eslint --ext ts .",
+    "lintfix": "eslint --fix --ext ts .",
     "prepublish": "npm run build",
     "build": "rollup -c",
     "release": "shipjs prepare"
