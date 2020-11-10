@@ -4,21 +4,17 @@ module.exports = {
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
-      modules: true
-    }
+      modules: true,
+    },
   },
   env: {
     es6: true,
-    node: true
+    node: true,
+    'jest/globals': true,
   },
-  plugins: [
-    '@typescript-eslint'
-  ],
-  extends: [
-    'eslint:recommended',
-    'prettier'
-  ],
+  plugins: ['@typescript-eslint', 'jest'],
+  extends: ['eslint:recommended', 'prettier'],
   rules: {
-    'no-unused-vars': 'off'
-  }
+    'no-unused-vars': 'off',
+  },
 }
