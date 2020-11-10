@@ -14,6 +14,7 @@
   "scripts": {
     "lint": "eslint --ext ts .",
     "lintfix": "eslint --fix --ext ts .",
+    "format": "prettier --write **/*.{ts,js,json}",
     "prepublish": "npm run build",
     "build": "rollup -c",
     "release": "shipjs prepare"
