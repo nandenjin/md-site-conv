@@ -12,21 +12,13 @@ module.exports = {
     node: true
   },
   plugins: [
-    '@typescript-eslint',
-    'prettier'
+    '@typescript-eslint'
   ],
   extends: [
     'eslint:recommended',
-    'plugin:prettier/recommended'
+    'prettier'
   ],
   rules: {
-    'no-unused-vars': 'off',
-    'prettier/prettier': [
-      'error',
-      {
-        'singleQuote': true,
-        'semi': false
-      }
-    ]
+    'no-unused-vars': 'off'
   }
 }
