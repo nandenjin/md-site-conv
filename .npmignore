@@ -2,6 +2,10 @@
 .github
 ship.config.js
 .eslintrc.js
+tests
+
+# Source files
+src
 
 # Misc
 *.log
