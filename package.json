@@ -22,7 +22,7 @@
   "dependencies": {
     "chokidar": "^3.3.1",
     "consola": "^2.9.0",
-    "markdown-it": "^9.0.1",
+    "markdown-it": "^12.0.2",
     "markdown-it-meta": "^0.0.1",
     "minimist": "^1.2.3",
     "rimraf": "^3.0.0",
