@@ -28,7 +28,7 @@ export interface ConvertOptions {
 
 interface MarkdownConvertResult {
   html: string
-  meta: { [key: string]: string }
+  meta: { [key: string]: any }
 }
 
 export interface Page {
@@ -144,8 +144,10 @@ export async function convertDir(
 
   await Promise.all(tasks)
 
-  const indexPath = path.join(outDir, '_index.json')
-  fsp.writeFile(indexPath, JSON.stringify(routes))
+  if (options.exportIndex) {
+    const indexPath = path.join(outDir, '_index.json')
+    fsp.writeFile(indexPath, JSON.stringify(routes))
+  }
 }
 
 /**
