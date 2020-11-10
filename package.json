@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "eslint --ext ts .",
     "lintfix": "eslint --fix --ext ts .",
-    "format": "prettier --write **/*.{ts,js,json}",
+    "format": "prettier --write **/*.{ts,js,json,md}",
     "prepublish": "npm run build",
     "build": "rollup -c",
     "release": "shipjs prepare"
@@ -39,10 +39,21 @@
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.15.0",
+    "husky": ">=4",
+    "lint-staged": ">=10",
     "prettier": "^1.18.2",
     "rollup": "^2.33.1",
     "shipjs": "0.23.0",
     "typescript": "^4.0.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": "eslint --cache --fix",
+    "*.{ts,js,json,md}": "prettier --write"
+  }
 }
