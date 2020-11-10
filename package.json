@@ -6,7 +6,10 @@
   "bin": {
     "md-site-conv": "lib/index.js"
   },
-  "repository": "https://github.com/nandenjin/nakamura-lab.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": "https://github.com/nandenjin/md-site-conv.git",
   "author": "Kazumi Inada <hello@nandenjin.com>",
   "scripts": {
     "lint": "eslint --ext ts --ignore-path .gitignore .",
