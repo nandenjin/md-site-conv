@@ -19,7 +19,7 @@ jobs:
       run: yarn lint
       
   test:
-    name: TEST
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
