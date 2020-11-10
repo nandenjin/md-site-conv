@@ -12,12 +12,7 @@ import chokidar, { FSWatcher } from 'chokidar'
 const md = new MarkdownIt()
 md.use(markdownItMeta)
 
-export enum RouteType {
-  // eslint-disable-next-line no-unused-vars
-  DIRECTORY = 'directory',
-  // eslint-disable-next-line no-unused-vars
-  PAGE = 'page'
-}
+export type RouteType = 'directory' | 'page'
 
 export interface Route {
   type: RouteType
@@ -92,10 +87,10 @@ export async function convertDir(
     if (ent.isDirectory()) {
       tasks.push(convertDir(entPath, path.join(outDir, name), options, rootDir))
       routes.push({
-        type: RouteType.DIRECTORY,
+        type: 'directory',
         path: route,
         name: routeName,
-        ref: path.join(routeName, '_index.json')
+        ref: path.join(routeName, '_index.json'),
       })
     }
 
@@ -111,14 +106,14 @@ export async function convertDir(
         convertFile(entPath).then(result => {
           const page: Page = { ...result, path: route }
           fsp.writeFile(distPath, JSON.stringify(page), {
-            encoding: 'utf-8'
+            encoding: 'utf-8',
           })
           routes.push({
-            type: RouteType.PAGE,
+            type: 'page',
             path: route,
             name: routeName,
             ref: routeName + '.json',
-            meta: result.meta
+            meta: result.meta,
           })
         })
       )
@@ -165,7 +160,7 @@ export async function convertFile(
   const meta = (<any>md).meta as { [key: string]: string }
   const result: MarkdownConvertResult = {
     html: rendered,
-    meta
+    meta,
   }
 
   return result
@@ -209,7 +204,7 @@ if (!module.parent) {
     const watch = !!args.watch
 
     const options: ConvertOptions = {
-      exportIndex: index
+      exportIndex: index,
     }
 
     try {
