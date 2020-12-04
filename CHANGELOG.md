@@ -1,3 +1,7 @@
+## [1.2.5](https://github.com/nandenjin/md-site-conv/compare/v1.2.4...v1.2.5) (2020-12-04)
+
+
+
 ## [1.2.4](https://github.com/nandenjin/md-site-conv/compare/v1.2.3...v1.2.4) (2020-11-10)
 
 
