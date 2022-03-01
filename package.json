@@ -32,7 +32,7 @@
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-typescript": "^8.3.1",
     "@types/jest": "^27.4.1",
     "@types/markdown-it": "^12.2.3",
