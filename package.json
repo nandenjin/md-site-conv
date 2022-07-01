@@ -48,7 +48,7 @@
     "jest": "^26.6.3",
     "lint-staged": ">=13",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "rollup": "^2.75.7",
     "shipjs": "0.24.4",
     "ts-jest": "^26.5.6",
