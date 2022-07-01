@@ -49,7 +49,7 @@
     "lint-staged": ">=13",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
-    "rollup": "^2.75.4",
+    "rollup": "^2.75.7",
     "shipjs": "0.24.4",
     "ts-jest": "^26.5.6",
     "typescript": "^4.7.2"
