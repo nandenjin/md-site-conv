@@ -52,7 +52,7 @@
     "rollup": "^2.75.7",
     "shipjs": "0.24.4",
     "ts-jest": "^26.5.6",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.4"
   },
   "license": "MIT",
   "husky": {
