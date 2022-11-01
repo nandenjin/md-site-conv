@@ -27,7 +27,7 @@
     "consola": "^2.15.3",
     "markdown-it": "^13.0.1",
     "markdown-it-meta": "^0.0.1",
-    "minimist": "^1.2.6",
+    "minimist": "^1.2.7",
     "rimraf": "^3.0.2",
     "yaml": "^2.1.1"
   },
