@@ -1,3 +1,7 @@
+## [1.2.28](https://github.com/nandenjin/md-site-conv/compare/v1.2.27...v1.2.28) (2022-11-15)
+
+
+
 ## [1.2.27](https://github.com/nandenjin/md-site-conv/compare/v1.2.26...v1.2.27) (2022-10-15)
 
 
